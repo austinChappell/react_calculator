@@ -40,6 +40,18 @@ class Calculator extends Component {
     total: 20,
   }
 
+  componentDidMount() {
+    window.addEventListener('keydown', this.inputListener);
+  }
+
+  inputListener = (e) => {
+    const value = e.keyCode === 13 ? '=' : e.key;
+    const button = buttons.find(b => String(b.value) === value);
+    if (button) {
+      this.handleClick(button);
+    }
+  }
+
   add = () => {
     const {
       pendingValue,
@@ -134,7 +146,6 @@ class Calculator extends Component {
 
   render() {
     const { pendingValue, total } = this.state;
-    console.log(this.state);
     return (
       <StyledDiv>
         <Grid>
@@ -144,7 +155,7 @@ class Calculator extends Component {
           {buttons.map(button => (
             <Button
               key={button.value}
-              onClick={() => this.handleClick({ ...button })}
+              onClick={() => this.handleClick(button)}
               style={button.style}
               value={button.value}
             />
