@@ -1,5 +1,5 @@
 export const COLORS = {
-  ACCENT: '#ff0000',
+  ACCENT: '#147f23',
   DARK: '#222222',
   LIGHT: '#ffffff',
 };
