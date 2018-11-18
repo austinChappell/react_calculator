@@ -10,7 +10,7 @@ import { COLORS, SPACE } from '../data/styles';
 const StyledDiv = styled.div({
   backgroundColor: COLORS.ACCENT,
   margin: '20px auto',
-  maxWidth: 400,
+  maxWidth: 300,
   padding: SPACE.MEDIUM,
   width: '90vw',
 });
@@ -19,25 +19,27 @@ const buttons = [
   { type: 'integer', value: 1 },
   { type: 'integer', value: 2 },
   { type: 'integer', value: 3 },
-  { type: 'operator', value: '+' },
+  { style: { gridRow: 'span 2' }, type: 'operator', value: '+' },
   { type: 'integer', value: 4 },
   { type: 'integer', value: 5 },
   { type: 'integer', value: 6 },
-  { type: 'operator', value: '-' },
   { type: 'integer', value: 7 },
   { type: 'integer', value: 8 },
   { type: 'integer', value: 9 },
-  { style: { gridRow: 'span 2' }, type: 'execute', value: '=' },
+  { type: 'operator', value: '-' },
   { type: 'integer', value: 0 },
+  { type: 'integer', value: '.' },
   { type: 'operator', value: '*' },
+  { style: { gridRow: 'span 2' }, type: 'execute', value: '=' },
   { type: 'operator', value: '/' },
+  { style: { gridColumn: 'span 2' }, type: 'clear', value: 'C' },
 ];
 
 class Calculator extends Component {
   state = {
     currentOperator: null,
     pendingValue: 0,
-    total: 20,
+    total: 0,
   }
 
   componentDidMount() {
@@ -46,7 +48,7 @@ class Calculator extends Component {
 
   inputListener = (e) => {
     const value = e.keyCode === 13 ? '=' : e.key;
-    const button = buttons.find(b => String(b.value) === value);
+    const button = buttons.find(b => String(b.value) === value.toUpperCase());
     if (button) {
       this.handleClick(button);
     }
@@ -60,6 +62,14 @@ class Calculator extends Component {
     this.setState({
       pendingValue: 0,
       total: Number(total) + Number(pendingValue),
+    });
+  }
+
+  clear = () => {
+    this.setState({
+      currentOperator: null,
+      pendingValue: 0,
+      total: 0,
     });
   }
 
@@ -141,6 +151,8 @@ class Calculator extends Component {
       this.setState({ currentOperator: button.value });
     } else if (button.type === 'execute') {
       this.execOperation({});
+    } else if (button.type === 'clear') {
+      this.clear();
     }
   }
 
